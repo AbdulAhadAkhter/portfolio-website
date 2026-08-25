@@ -1,0 +1,26 @@
+name: Update gallery manifest
+
+on:
+  push:
+    paths:
+      - "images/**"
+      - "scripts/generate_gallery.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate gallery manifest
+        run: python3 scripts/generate_gallery.py
+
+      - name: Commit manifest if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update gallery manifest
+          file_pattern: js/gallery-manifest.json
